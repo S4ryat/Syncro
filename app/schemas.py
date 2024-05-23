@@ -1,41 +1,78 @@
+from pydantic import BaseModel, UUID4
 from typing import Optional
 
-from pydantic import UUID4, BaseModel
-
-
-# Shared properties
+# Post schemas
 class PostBase(BaseModel):
-    title: Optional[str] = None
-    body: Optional[str] = None
-
-
-# Properties to receive via API on creation
-class PostCreate(PostBase):
     title: str
-    body: str
+    content: str
 
+class PostCreate(PostBase):
+    pass
 
-# Properties to receive via API on update
 class PostUpdate(PostBase):
     pass
 
-
-class PostInDBBase(PostBase):
-    id: Optional[UUID4] = None
+class Post(PostBase):
+    id: UUID4
 
     class Config:
-        orm_mode = True
+        orm_mode: True
 
 
-# Additional properties to return via API
-class Post(PostInDBBase):
+# User schemas
+class UserBase(BaseModel):
+    email: str
+    name: str
+
+class UserCreate(UserBase):
+    password: str
+
+class UserUpdate(UserBase):
     pass
 
+class User(UserBase):
+    id: UUID4
 
-# Additional properties stored in DB
-class PostInDB(PostInDBBase):
+    class Config:
+        orm_mode: True
+
+
+# Music schemas
+class MusicBase(BaseModel):
+    title: str
+    artist: str
+
+class MusicCreate(MusicBase):
     pass
 
+class MusicUpdate(MusicBase):
+    pass
 
+class Music(MusicBase):
+    id: UUID4
+
+    class Config:
+        orm_mode: True
+
+
+# Recommendation schemas
+class RecommendationBase(BaseModel):
+    post_id: UUID4
+    user_id: UUID4
+
+class RecommendationCreate(RecommendationBase):
+    pass
+
+class RecommendationUpdate(RecommendationBase):
+    pass
+
+class Recommendation(RecommendationBase):
+    id: UUID4
+
+    class Config:
+        orm_mode: True
+
+
+# HTTP Error schema
 class HTTPError(BaseModel):
     detail: str

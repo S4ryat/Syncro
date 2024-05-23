@@ -1,77 +1,137 @@
-from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
-
-from fastapi.encoders import jsonable_encoder
-from pydantic import UUID4, BaseModel
+from typing import Any, Dict, List, Optional, Union
 from sqlalchemy.orm import Session
+from pydantic import UUID4
 
-from app.db.database import Base
-
-from . import schemas
-from .models import Post
-
-# Define custom types for SQLAlchemy model, and Pydantic schemas
-ModelType = TypeVar("ModelType", bound=Base)
-CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
-UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
+from . import models, schemas
 
 
-class BaseActions(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
-    def __init__(self, model: Type[ModelType]):
-        """Base class that can be extend by other action classes.
-           Provides basic CRUD and listing operations.
+# CRUD Operations for Post
+class CRUDPost:
+    def get(self, db: Session, id: UUID4) -> Optional[models.Post]:
+        return db.query(models.Post).filter(models.Post.id == id).first()
 
-        :param model: The SQLAlchemy model
-        :type model: Type[ModelType]
-        """
-        self.model = model
+    def get_all(self, db: Session, skip: int = 0, limit: int = 100) -> List[models.Post]:
+        return db.query(models.Post).offset(skip).limit(limit).all()
 
-    def get_all(
-        self, db: Session, *, skip: int = 0, limit: int = 100
-    ) -> List[ModelType]:
-        return db.query(self.model).offset(skip).limit(limit).all()
-
-    def get(self, db: Session, id: UUID4) -> Optional[ModelType]:
-        return db.query(self.model).filter(self.model.id == id).first()
-
-    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
-        obj_in_data = jsonable_encoder(obj_in)
-        db_obj = self.model(**obj_in_data)  # type: ignore
+    def create(self, db: Session, obj_in: schemas.PostCreate) -> models.Post:
+        db_obj = models.Post(**obj_in.dict())
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
 
-    def update(
-        self,
-        db: Session,
-        *,
-        db_obj: ModelType,
-        obj_in: Union[UpdateSchemaType, Dict[str, Any]]
-    ) -> ModelType:
-        obj_data = jsonable_encoder(db_obj)
-        if isinstance(obj_in, dict):
-            update_data = obj_in
-        else:
-            update_data = obj_in.dict(exclude_unset=True)
-        for field in obj_data:
-            if field in update_data:
-                setattr(db_obj, field, update_data[field])
-        db.add(db_obj)
+    def update(self, db: Session, db_obj: models.Post, obj_in: Union[schemas.PostUpdate, Dict[str, Any]]) -> models.Post:
+        update_data = obj_in.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(db_obj, key, value)
         db.commit()
         db.refresh(db_obj)
         return db_obj
 
-    def remove(self, db: Session, *, id: UUID4) -> ModelType:
-        obj = db.query(self.model).get(id)
+    def remove(self, db: Session, id: UUID4) -> models.Post:
+        obj = db.query(models.Post).get(id)
         db.delete(obj)
         db.commit()
         return obj
 
 
-class PostActions(BaseActions[Post, schemas.PostCreate, schemas.PostUpdate]):
-    """Post actions with basic CRUD operations"""
-
-    pass
+post = CRUDPost()
 
 
-post = PostActions(Post)
+# CRUD Operations for User
+class CRUDUser:
+    def get(self, db: Session, id: UUID4) -> Optional[models.User]:
+        return db.query(models.User).filter(models.User.id == id).first()
+
+    def get_all(self, db: Session, skip: int = 0, limit: int = 100) -> List[models.User]:
+        return db.query(models.User).offset(skip).limit(limit).all()
+
+    def create(self, db: Session, obj_in: schemas.UserCreate) -> models.User:
+        db_obj = models.User(**obj_in.dict())
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def update(self, db: Session, db_obj: models.User, obj_in: Union[schemas.UserUpdate, Dict[str, Any]]) -> models.User:
+        update_data = obj_in.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(db_obj, key, value)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def remove(self, db: Session, id: UUID4) -> models.User:
+        obj = db.query(models.User).get(id)
+        db.delete(obj)
+        db.commit()
+        return obj
+
+
+user = CRUDUser()
+
+
+# CRUD Operations for Music
+class CRUDMusic:
+    def get(self, db: Session, id: UUID4) -> Optional[models.Music]:
+        return db.query(models.Music).filter(models.Music.id == id).first()
+
+    def get_all(self, db: Session, skip: int = 0, limit: int = 100) -> List[models.Music]:
+        return db.query(models.Music).offset(skip).limit(limit).all()
+
+    def create(self, db: Session, obj_in: schemas.MusicCreate) -> models.Music:
+        db_obj = models.Music(**obj_in.dict())
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def update(self, db: Session, db_obj: models.Music, obj_in: Union[schemas.MusicUpdate, Dict[str, Any]]) -> models.Music:
+        update_data = obj_in.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(db_obj, key, value)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def remove(self, db: Session, id: UUID4) -> models.Music:
+        obj = db.query(models.Music).get(id)
+        db.delete(obj)
+        db.commit()
+        return obj
+
+
+music = CRUDMusic()
+
+
+# CRUD Operations for Recommendation
+class CRUDRecommendation:
+    def get(self, db: Session, id: UUID4) -> Optional[models.Recommendation]:
+        return db.query(models.Recommendation).filter(models.Recommendation.id == id).first()
+
+    def get_all(self, db: Session, skip: int = 0, limit: int = 100) -> List[models.Recommendation]:
+        return db.query(models.Recommendation).offset(skip).limit(limit).all()
+
+    def create(self, db: Session, obj_in: schemas.RecommendationCreate) -> models.Recommendation:
+        db_obj = models.Recommendation(**obj_in.dict())
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def update(self, db: Session, db_obj: models.Recommendation, obj_in: Union[schemas.RecommendationUpdate, Dict[str, Any]]) -> models.Recommendation:
+        update_data = obj_in.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(db_obj, key, value)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+    def remove(self, db: Session, id: UUID4) -> models.Recommendation:
+        obj = db.query(models.Recommendation).get(id)
+        db.delete(obj)
+        db.commit()
+        return obj
+
+
+recommendation = CRUDRecommendation()
