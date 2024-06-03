@@ -4,7 +4,6 @@ from pydantic import UUID4
 
 from . import models, schemas
 
-
 # CRUD Operations for Post
 class CRUDPost:
     def get(self, db: Session, id: UUID4) -> Optional[models.Post]:
@@ -21,7 +20,7 @@ class CRUDPost:
         return db_obj
 
     def update(self, db: Session, db_obj: models.Post, obj_in: Union[schemas.PostUpdate, Dict[str, Any]]) -> models.Post:
-        update_data = obj_in.dict(exclude_unset=True)
+        update_data = obj_in if isinstance(obj_in, dict) else obj_in.dict(exclude_unset=True)
         for key, value in update_data.items():
             setattr(db_obj, key, value)
         db.commit()
@@ -33,10 +32,6 @@ class CRUDPost:
         db.delete(obj)
         db.commit()
         return obj
-
-
-post = CRUDPost()
-
 
 # CRUD Operations for User
 class CRUDUser:
@@ -54,7 +49,7 @@ class CRUDUser:
         return db_obj
 
     def update(self, db: Session, db_obj: models.User, obj_in: Union[schemas.UserUpdate, Dict[str, Any]]) -> models.User:
-        update_data = obj_in.dict(exclude_unset=True)
+        update_data = obj_in if isinstance(obj_in, dict) else obj_in.dict(exclude_unset=True)
         for key, value in update_data.items():
             setattr(db_obj, key, value)
         db.commit()
@@ -66,10 +61,6 @@ class CRUDUser:
         db.delete(obj)
         db.commit()
         return obj
-
-
-user = CRUDUser()
-
 
 # CRUD Operations for Music
 class CRUDMusic:
@@ -87,7 +78,7 @@ class CRUDMusic:
         return db_obj
 
     def update(self, db: Session, db_obj: models.Music, obj_in: Union[schemas.MusicUpdate, Dict[str, Any]]) -> models.Music:
-        update_data = obj_in.dict(exclude_unset=True)
+        update_data = obj_in if isinstance(obj_in, dict) else obj_in.dict(exclude_unset=True)
         for key, value in update_data.items():
             setattr(db_obj, key, value)
         db.commit()
@@ -99,10 +90,6 @@ class CRUDMusic:
         db.delete(obj)
         db.commit()
         return obj
-
-
-music = CRUDMusic()
-
 
 # CRUD Operations for Recommendation
 class CRUDRecommendation:
@@ -120,7 +107,7 @@ class CRUDRecommendation:
         return db_obj
 
     def update(self, db: Session, db_obj: models.Recommendation, obj_in: Union[schemas.RecommendationUpdate, Dict[str, Any]]) -> models.Recommendation:
-        update_data = obj_in.dict(exclude_unset=True)
+        update_data = obj_in if isinstance(obj_in, dict) else obj_in.dict(exclude_unset=True)
         for key, value in update_data.items():
             setattr(db_obj, key, value)
         db.commit()
@@ -133,5 +120,7 @@ class CRUDRecommendation:
         db.commit()
         return obj
 
-
+music = CRUDMusic()
+user = CRUDUser()
+post = CRUDPost()
 recommendation = CRUDRecommendation()

@@ -1,4 +1,4 @@
-"""scnd test
+"""scnd tests
 
 Revision ID: 9cc73a32244f
 Revises: 6fcd267293e5

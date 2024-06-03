@@ -1,4 +1,4 @@
-"""third test
+"""third tests
 
 Revision ID: a51af9eebfff
 Revises: 9cc73a32244f
