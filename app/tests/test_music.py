@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 from app.main import app
 from app.db.database import SessionLocal, Base
-from app.models import Music
 import pytest
 
 client = TestClient(app)

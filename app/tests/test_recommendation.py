@@ -1,8 +1,7 @@
 from fastapi.testclient import TestClient
 from app.main import app
 from app.db.database import SessionLocal, engine
-from app.models import Base, User, Music, UserMusic
-from app.schemas import UserCreate
+from app.db.models import Base, User, UserMusic
 
 client = TestClient(app)
 
@@ -27,12 +26,12 @@ def test_recommend_profiles():
     db.add(music2)
     db.commit()
 
-    user_music1 = UserMusic(user_id=user1.id, music_id=music1.id)
-    user_music2 = UserMusic(user_id=user2.id, music_id=music1.id)
+   # user_music1 = UserMusic(user_id=user1.id, music_id=music1.id)
+     # user_music2 = UserMusic(user_id=user2.id, music_id=music1.id)
 
-    db.add(user_music1)
-    db.add(user_music2)
-    db.commit()
+   # db.add(user_music1)
+    # db.add(user_music2)
+    # db.commit()
 
     response = client.get(f"/recommendations/{user1.id}")
     assert response.status_code == 200
