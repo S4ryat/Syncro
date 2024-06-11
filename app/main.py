@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from app.actions import CRUDOperations
 from app.db.database import get_db
-from app.auth import get_current_username
+# from app.auth import get_current_username
 from app.schemas import User
 
 app = FastAPI(
