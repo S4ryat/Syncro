@@ -4,6 +4,7 @@ from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from sqlalchemy.orm import Session
 from app.actions import CRUDOperations
 from app.db.database import get_db
+from app.auth import get_current_username
 from app.schemas import User, UserCreate, Song, SongCreate, Recommendation, RecommendationCreate, UserMusic, UserMusicCreate
 from app.db.models import User as SQLAlchemyUser, Song as SQLAlchemySong, Recommendation as SQLAlchemyRecommendation, UserMusic as SQLAlchemyUserMusic
 
@@ -11,16 +12,18 @@ app = FastAPI(
     title="Music Recommendation API",
     description="API for Music Recommendation",
     version="1.0.0",
+    dependencies=[Depends(get_current_username())]
 )
-
 user_crud = CRUDOperations(SQLAlchemyUser)
 song_crud = CRUDOperations(SQLAlchemySong)
 recommendation_crud = CRUDOperations(SQLAlchemyRecommendation)
 user_music_crud = CRUDOperations(SQLAlchemyUserMusic)
 
+
 @app.get("/")
 def index():
     return {"message": "Hello world!"}
+
 
 # User Endpoints
 @app.get("/users", response_model=List[User], tags=["users"])
@@ -28,10 +31,12 @@ def list_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)) -
     users = user_crud.get_all(db=db, skip=skip, limit=limit)
     return users
 
+
 @app.post("/users", response_model=User, status_code=HTTP_201_CREATED, tags=["users"])
 def create_user(body: UserCreate, db: Session = Depends(get_db)) -> Any:
     user = user_crud.create(db=db, obj_in=body)
     return user
+
 
 @app.put("/users/{id}", response_model=User, tags=["users"])
 def update_user(id: int, user_in: UserCreate, db: Session = Depends(get_db)) -> Any:
@@ -41,12 +46,14 @@ def update_user(id: int, user_in: UserCreate, db: Session = Depends(get_db)) -> 
     user = user_crud.update(db=db, db_obj=user, obj_in=user_in)
     return user
 
+
 @app.get("/users/{id}", response_model=User, tags=["users"])
 def get_user(id: int, db: Session = Depends(get_db)) -> Any:
     user = user_crud.get(db=db, id=id)
     if not user:
         raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="User not found")
     return user
+
 
 @app.delete("/users/{id}", response_model=User, tags=["users"])
 def delete_user(id: int, db: Session = Depends(get_db)) -> Any:
@@ -56,16 +63,19 @@ def delete_user(id: int, db: Session = Depends(get_db)) -> Any:
     user = user_crud.remove(db=db, id=id)
     return user
 
+
 # Song Endpoints
 @app.get("/songs", response_model=List[Song], tags=["songs"])
 def list_songs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)) -> Any:
     songs = song_crud.get_all(db=db, skip=skip, limit=limit)
     return songs
 
+
 @app.post("/songs", response_model=Song, status_code=HTTP_201_CREATED, tags=["songs"])
 def create_song(body: SongCreate, db: Session = Depends(get_db)) -> Any:
     song = song_crud.create(db=db, obj_in=body)
     return song
+
 
 @app.put("/songs/{id}", response_model=Song, tags=["songs"])
 def update_song(id: int, song_in: SongCreate, db: Session = Depends(get_db)) -> Any:
