@@ -1,23 +1,23 @@
 import secrets
 from typing import Annotated
-
-from fastapi import Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import HTTPBasicCredentials, HTTPBasic
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 security = HTTPBasic()
+app = FastAPI(dependencies=[Depends(security)])
 
 
 def get_current_username(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)],
 ):
     current_username_bytes = credentials.username.encode("utf8")
-    correct_username_bytes = b"stanleyjobson"
+    correct_username_bytes = b"saryat"
     is_correct_username = secrets.compare_digest(
         current_username_bytes, correct_username_bytes
     )
     current_password_bytes = credentials.password.encode("utf8")
-    correct_password_bytes = b"swordfish"
+    correct_password_bytes = b"slol12"
     is_correct_password = secrets.compare_digest(
         current_password_bytes, correct_password_bytes
     )
