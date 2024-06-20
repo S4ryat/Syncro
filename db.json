@@ -1,0 +1,7 @@
+{
+                "login": {
+                                "username": "testuser",
+                                "password": "testpassword",
+                                "token": "mock-token"
+                }
+}

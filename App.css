@@ -1,0 +1,298 @@
+/* src/App.css */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #1a1a1a;
+}
+
+/* Le css du header */
+.navbar {
+  background-color: #333;
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .left {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.navbar .center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar .right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar li {
+  margin: 0 15px;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #ddd;
+}
+
+.navbar .search-container {
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  border: 2px solid #ddd;
+  border-radius: 18px;
+  background-color: transparent;
+}
+
+.navbar input[type="text"]:focus,
+.navbar input[type="text"].filled {
+  border-color: #fff;
+  /* Couleur de la bordure lorsque la zone de recherche est remplie */
+}
+
+.navbar .search-container input[type="text"] {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 20px;
+  background-color: #444;
+  color: #fff;
+  outline: none;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  /* Utilisez une largeur de 100% pour que l'input prenne toute la largeur de son conteneur */
+}
+
+.navbar .search-container input[type="text"]::placeholder {
+  color: #bbb;
+
+}
+
+.navbar .search-container input[type="text"]:focus {
+  background-color: #555;
+  width: 100%;
+  /* Élargissement au focus pour prendre toute la largeur */
+}
+
+.navbar .center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar input[type="text"] {
+  width: 100%;
+  /* Ajustez selon vos besoins */
+}
+
+.navbar input[type="text"]:focus {
+  width: 100%;
+  /* Élargissement au focus pour un effet sympa */
+}
+
+.navbar .clear-icon,
+.navbar .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #bbb;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.navbar .clear-icon:hover,
+.navbar .search-icon:hover {
+  color: #fff;
+}
+
+
+/* tout ce qui est formulaire */
+
+.wrapper {
+  position: relative;
+  width: 420px;
+  height: 450px;
+  background-color: black;
+  border: 2px solid rgba(255, 255, 255, .1);
+  backdrop-filter: blur(30px);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  transition: height .2s ease;
+}
+
+.wrapper.active {
+  height: 520px;
+}
+
+.wrapper .from-box {
+  width: 100%;
+  padding: 40px;
+}
+
+.wrapper .from-box.login {
+  transition: translate .18s ease;
+  translate: 0px;
+}
+
+.wrapper.active .from-box.login {
+  transition: none;
+  translate: -400px;
+}
+
+.wrapper .from-box.register {
+  position: absolute;
+  transition: none;
+  translate: 400px;
+}
+
+.wrapper.active .from-box.register {
+  transition: translate .18s ease;
+  translate: 0px;
+}
+
+form h1 {
+  font-size: 36px;
+  text-align: center;
+  color: #fff;
+  margin-top: 1px;
+}
+
+form .input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 30px 0;
+
+}
+
+.input-box input {
+  color: #fff;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, .1);
+  border-radius: 50px;
+  font-size: 16px;
+  padding: 20px 160px 20px 20px;
+  margin-left: 20px;
+}
+
+.input-box input::placeholder {
+  color: #fff;
+}
+
+.input-box .icon {
+  position: absolute;
+  right: 40px;
+  top: 25px;
+  translate: 0 -50%;
+  font-size: 16px;
+  color: #fff;
+
+}
+
+form .remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14.5px;
+  margin-right: 4px;
+  margin-bottom: 30px;
+  margin-left: 40px;
+  color: #fff;
+}
+
+
+
+
+
+.remember-forgot link {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 30px;
+
+}
+
+.remember-forgot a:hover {
+  text-decoration: underline;
+}
+
+form button {
+  width: 90%;
+  height: 45px;
+  background: #0ef;
+  border: none;
+  outline: none;
+  padding-left: 20px;
+  margin-left: 30px;
+
+
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-weight: 700;
+}
+
+form .register-link {
+  font-size: 14.5PX;
+  text-align: center;
+  margin: 40px 0 15px;
+  margin-bottom: 50PX;
+}
+
+.register-link p link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-link p link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link p {
+  color: #fff;
+}
+
+.login-link p {
+  color: #fff;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}
+
+.custom-checkbox input[type="checkbox"]:checked+.custom-checkbox {
+  background-color: #007bff;
+  /* Nouvelle couleur de fond lorsque cochée */
+}
